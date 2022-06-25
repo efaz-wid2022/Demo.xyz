@@ -32,6 +32,7 @@ class DemoXyz extends StatefulWidget {
 
 class _DemoXyzState extends State<DemoXyz> {
   int currentIndex = 0;
+  int currentIndexs = 0;
   final PageController controller = PageController();
 
   List<String> images = [
@@ -169,7 +170,7 @@ class _DemoXyzState extends State<DemoXyz> {
                       controller: controller,
                       onPageChanged: (index) {
                         setState(() {
-                          currentIndex = index % banner2.length;
+                          currentIndexs = index % banner2.length;
                         });
                       },
                       itemBuilder: (context, index) {
@@ -194,7 +195,7 @@ class _DemoXyzState extends State<DemoXyz> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       for (var i = 0; i < banner2.length; i++)
-                        Slide(currentIndex == i)
+                        Slide(currentIndexs == i)
                     ],
                   ),
                 ],

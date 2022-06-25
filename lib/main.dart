@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -53,6 +52,8 @@ class _DemoXyzState extends State<DemoXyz> {
     "assets/Frame 7.png",
     "assets/Frame 7.png",
   ];
+  
+
 
   @override
   Widget build(BuildContext context) {
@@ -154,6 +155,7 @@ class _DemoXyzState extends State<DemoXyz> {
                   ),
                 ],
               ),
+
             ),
             //Catagories
             Container(),

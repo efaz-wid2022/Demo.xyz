@@ -103,40 +103,87 @@ class _DemoXyzState extends State<DemoXyz> {
         ),
       ),
       //Navbar
-      bottomNavigationBar: Container(
-        color: Colors.black,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          child: GNav(
-            gap: 8,
-            backgroundColor: Colors.black,
-            color: Colors.white,
-            activeColor: Color(0xFFdab3e6),
-            tabBackgroundColor: Color(0xFF726875),
-            padding: EdgeInsets.all(16),
-            tabs: [
-              GButton(
-                icon: Icons.home,
-                text: "Home",
+      // bottomNavigationBar: Container(
+      //   color: Colors.black,
+      //   child: Padding(
+      //     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      //     child: GNav(
+      //       gap: 8,
+      //       backgroundColor: Colors.black,
+      //       color: Colors.white,
+      //       activeColor: Color(0xFFdab3e6),
+      //       tabBackgroundColor: Color(0xFF726875),
+      //       padding: EdgeInsets.all(16),
+      //       tabs: [
+      //         GButton(
+      //           icon: Icons.home,
+      //           text: "Home",
+      //         ),
+      //         GButton(
+      //           icon: Icons.inbox,
+      //           text: "Inbox",
+      //         ),
+      //         GButton(
+      //           icon: Icons.add,
+      //           text: "Orders",
+      //         ),
+      //         GButton(
+      //           icon: Icons.help_center_outlined,
+      //           text: "help",
+      //         ),
+      //         GButton(
+      //           icon: Icons.line_style_sharp,
+      //           text: "More",
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
+
+      bottomNavigationBar: NavigationBarTheme(
+        data: NavigationBarThemeData(
+          iconTheme: MaterialStateProperty.all(
+              IconThemeData(
+                color: Color(0xFFFFFFFF),
+                size: 20,
               ),
-              GButton(
-                icon: Icons.inbox,
-                text: "Inbox",
-              ),
-              GButton(
-                icon: Icons.add,
-                text: "Orders",
-              ),
-              GButton(
-                icon: Icons.help_center_outlined,
-                text: "help",
-              ),
-              GButton(
-                icon: Icons.line_style_sharp,
-                text: "More",
-              ),
-            ],
           ),
+          indicatorColor: Color(0xFFD9D9D9),
+          labelTextStyle: MaterialStateProperty.all(
+            TextStyle(
+              fontSize: 12,
+              fontFamily: "InterR",
+              fontWeight: FontWeight.normal,
+              color: Color(0xFFFFFFFF)
+            ),
+
+          ),
+        ),
+        child: NavigationBar(
+          height: 60,
+          backgroundColor: Color(0xFFFF5A5F),
+          destinations: [
+            NavigationDestination(
+              icon: Icon(Icons.home),
+              label: "Home",
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.inbox),
+              label: "Inbox",
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.add),
+              label: "Order",
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.help_center_outlined),
+              label: "Help",
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.menu),
+              label: "More",
+            ),
+          ],
         ),
       ),
     );

@@ -31,6 +31,28 @@ class DemoXyz extends StatefulWidget {
 }
 
 class _DemoXyzState extends State<DemoXyz> {
+  int currentIndex = 0;
+  final PageController controller = PageController();
+
+  List<String> images = [
+    "assets/Frame 4.png",
+    "assets/Frame 4.png",
+    "assets/Frame 4.png",
+    "assets/Frame 4.png",
+    "assets/Frame 4.png",
+    "assets/Frame 4.png",
+    "assets/Frame 4.png",
+  ];
+  List<String> banner2 = [
+    "assets/Frame 7.png",
+    "assets/Frame 7.png",
+    "assets/Frame 7.png",
+    "assets/Frame 7.png",
+    "assets/Frame 7.png",
+    "assets/Frame 7.png",
+    "assets/Frame 7.png",
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,11 +112,94 @@ class _DemoXyzState extends State<DemoXyz> {
             //Search
             Container(),
             //Slide banner 1
-            Container(),
+            Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 160,
+                    width: double.infinity,
+                    child: PageView.builder(
+                      controller: controller,
+                      onPageChanged: (index) {
+                        setState(() {
+                          currentIndex = index % images.length;
+                        });
+                      },
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: SizedBox(
+                            height: 300,
+                            width: double.infinity,
+                            child: Image.asset(
+                              images[index % images.length],
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      for (var i = 0; i < images.length; i++)
+                        buildIndicator(currentIndex == i)
+                    ],
+                  ),
+                ],
+              ),
+            ),
             //Catagories
             Container(),
             //Slide banner 2
-            Container(),
+            SizedBox(height: 10),
+            Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 160,
+                    width: double.infinity,
+                    child: PageView.builder(
+                      controller: controller,
+                      onPageChanged: (index) {
+                        setState(() {
+                          currentIndex = index % banner2.length;
+                        });
+                      },
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: SizedBox(
+                            height: 300,
+                            width: double.infinity,
+                            child: Image.asset(
+                              banner2[index % banner2.length],
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      for (var i = 0; i < banner2.length; i++)
+                        Slide(currentIndex == i)
+                    ],
+                  ),
+                ],
+              ),
+            ),
             //Trending
             Container(),
             //Recommended
@@ -102,61 +207,22 @@ class _DemoXyzState extends State<DemoXyz> {
           ],
         ),
       ),
-      //Navbar
-      // bottomNavigationBar: Container(
-      //   color: Colors.black,
-      //   child: Padding(
-      //     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      //     child: GNav(
-      //       gap: 8,
-      //       backgroundColor: Colors.black,
-      //       color: Colors.white,
-      //       activeColor: Color(0xFFdab3e6),
-      //       tabBackgroundColor: Color(0xFF726875),
-      //       padding: EdgeInsets.all(16),
-      //       tabs: [
-      //         GButton(
-      //           icon: Icons.home,
-      //           text: "Home",
-      //         ),
-      //         GButton(
-      //           icon: Icons.inbox,
-      //           text: "Inbox",
-      //         ),
-      //         GButton(
-      //           icon: Icons.add,
-      //           text: "Orders",
-      //         ),
-      //         GButton(
-      //           icon: Icons.help_center_outlined,
-      //           text: "help",
-      //         ),
-      //         GButton(
-      //           icon: Icons.line_style_sharp,
-      //           text: "More",
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
-
+      //Nav Bar
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
           iconTheme: MaterialStateProperty.all(
-              IconThemeData(
-                color: Color(0xFFFFFFFF),
-                size: 20,
-              ),
+            IconThemeData(
+              color: Color(0xFFFFFFFF),
+              size: 20,
+            ),
           ),
           indicatorColor: Color(0xFFD9D9D9),
           labelTextStyle: MaterialStateProperty.all(
             TextStyle(
-              fontSize: 12,
-              fontFamily: "InterR",
-              fontWeight: FontWeight.normal,
-              color: Color(0xFFFFFFFF)
-            ),
-
+                fontSize: 12,
+                fontFamily: "InterR",
+                fontWeight: FontWeight.normal,
+                color: Color(0xFFFFFFFF)),
           ),
         ),
         child: NavigationBar(
@@ -184,6 +250,34 @@ class _DemoXyzState extends State<DemoXyz> {
               label: "More",
             ),
           ],
+        ),
+      ),
+    );
+  }
+  //Slide Banner Controller 1
+  Widget buildIndicator(bool isSelected) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 1),
+      child: Container(
+        height: isSelected ? 6 : 6,
+        width: isSelected ? 6 : 6,
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          color: isSelected ? Color(0xFFFF5A5F) : Color(0xFFD9D9D9),
+        ),
+      ),
+    );
+  }
+  //Slide Banner Controller 2
+  Widget Slide(bool isSelected) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 1),
+      child: Container(
+        height: isSelected ? 6 : 6,
+        width: isSelected ? 6 : 6,
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          color: isSelected ? Color(0xFFFF5A5F) : Color(0xFFD9D9D9),
         ),
       ),
     );

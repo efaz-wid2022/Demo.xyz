@@ -1,5 +1,9 @@
+import 'package:demo_xyz/MaterialColor.dart';
+import 'package:demo_xyz/Slider.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_controller.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: buildMaterialColor(Color(0xFFFF5A5F)),
       ),
       debugShowCheckedModeBanner: false,
       home: DemoXyz(),
@@ -30,9 +34,8 @@ class DemoXyz extends StatefulWidget {
 }
 
 class _DemoXyzState extends State<DemoXyz> {
-  int currentIndex = 0;
-  int currentIndexs = 0;
-  final PageController controller = PageController();
+  int activeIndex = 0;
+  final CarouselController controller = CarouselController();
 
   List<String> images = [
     "assets/Frame 4.png",
@@ -52,8 +55,58 @@ class _DemoXyzState extends State<DemoXyz> {
     "assets/Frame 7.png",
     "assets/Frame 7.png",
   ];
-  
+  Widget buildIndicator() {
+   return AnimatedSmoothIndicator(
+      activeIndex: activeIndex,
+      count: images.length,
+      effect: SlideEffect(
+        dotHeight: 8,
+        dotWidth: 4,
+        dotColor: Colors.black,
+        activeDotColor: Colors.red,
+      ),
+    );
+  }
 
+  Widget buildImage(String image, int index) {
+    return Container(
+      //margin: EdgeInsets.symmetric(horizontal: 3),
+      child: Image.asset(image,
+        fit: BoxFit.cover,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+      ),
+
+    );
+  }
+
+  List<Widget> generatedImagesTiles() {
+    return images
+        .map(
+          (element) => ClipRRect(
+        child: Image.asset(
+          element,
+          fit: BoxFit.cover,
+        ),
+        borderRadius: BorderRadius.circular(10),
+      ),
+    )
+        .toList();
+  }
+  List<Widget> generatedImagesTiles2() {
+    return banner2
+        .map(
+          (element) => ClipRRect(
+        child: Image.asset(
+          element,
+          fit: BoxFit.cover,
+        ),
+        borderRadius: BorderRadius.circular(10),
+      ),
+    )
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,97 +165,288 @@ class _DemoXyzState extends State<DemoXyz> {
               ),
             ),
             //Search
-            Container(),
-            //Slide banner 1
             Container(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                child: TextField(
+                  readOnly: true,
+                  showCursor: true,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                          color: Color(0xFF9A9A9A), width: 1.0),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                          color: Color(0xFFFF5A5F), width: 1.0),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    hintText: 'Enter a search term',
+                    prefixIcon: Icon(Icons.search_sharp),
+                  ),
+                ),
+              ),
+            ),
+            //Banner Slider 1
+            CustomizeSlider(images),
+            //Categories
+            Container(
+              margin: EdgeInsets.fromLTRB(12, 20, 12, 12),
+              padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                borderRadius: BorderRadius.circular(10),
+              ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  SizedBox(
-                    height: 160,
-                    width: double.infinity,
-                    child: PageView.builder(
-                      controller: controller,
-                      onPageChanged: (index) {
-                        setState(() {
-                          currentIndex = index % images.length;
-                        });
-                      },
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: SizedBox(
-                            height: 300,
-                            width: double.infinity,
-                            child: Image.asset(
-                              images[index % images.length],
-                              fit: BoxFit.cover,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        //margin: EdgeInsets.all(12.0),
+                        //padding: EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Color(0xFFFF5A5F),
+                              child: ClipRRect(
+                                child: Image.asset('assets/o1_Group.png'),
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              "AC Repair\nServices",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        //margin: EdgeInsets.all(12.0),
+                        //padding: EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Color(0xFFFF5A5F),
+                              child: ClipRRect(
+                                child: Image.asset('assets/o2_Group.png'),
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              "Appliance\nRepair",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        //margin: EdgeInsets.all(12.0),
+                        //padding: EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Color(0xFFFF5A5F),
+                              child: ClipRRect(
+                                child: Image.asset('assets/o3_Group.png'),
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              "Beauty \n& Salon",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        //margin: EdgeInsets.all(12.0),
+                        //padding: EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Color(0xFFFF5A5F),
+                              child: ClipRRect(
+                                child: Image.asset('assets/o4_Group.png'),
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              "Trips &\nTravels",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        //margin: EdgeInsets.all(12.0),
+                        //padding: EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Color(0xFFFF5A5F),
+                              child: ClipRRect(
+                                child: Image.asset('assets/o5_Group.png'),
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              "Car Care\nServices",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        //margin: EdgeInsets.all(12.0),
+                        //padding: EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Color(0xFFFF5A5F),
+                              child: ClipRRect(
+                                child: Image.asset('assets/o6_Group.png'),
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              "Clenning\n& Pest",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        //margin: EdgeInsets.all(12.0),
+                        //padding: EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Color(0xFFFF5A5F),
+                              child: ClipRRect(
+                                child: Image.asset('assets/o7_Group.png'),
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              "Painting &\nRenovation",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        //margin: EdgeInsets.all(12.0),
+                        //padding: EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundColor: Color(0xFFFF5A5F),
+                              child: ClipRRect(
+                                child: Image.asset('assets/o8_Group.png'),
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              "Packaing & \nShifting",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12),
+                  const Divider(
+                    thickness: 1, // thickness of the line
+                    indent: 20, // empty space to the leading edge of divider.
+                    endIndent:
+                    20, // empty space to the trailing edge of the divider.
+                    color: Color(
+                        0xFF9A9A9A), // The color to use when painting the line.
+                    height: 20, // The divider's height extent.
+                  ),
+                  InkWell(
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Text(
+                            "More Categories",
+                            style: TextStyle(
+                              color: Color(0xFF9A9A9A),
+                              fontSize: 20,
                             ),
                           ),
-                        );
-                      },
+                          Image.asset('assets/down.png')
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      for (var i = 0; i < images.length; i++)
-                        buildIndicator(currentIndex == i)
-                    ],
+                    onTap: () => {
+                      _moreCatagoriesModal(context),
+                    },
                   ),
                 ],
               ),
-
             ),
-            //Catagories
-            Container(),
-            //Slide banner 2
             SizedBox(height: 10),
-            Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 160,
-                    width: double.infinity,
-                    child: PageView.builder(
-                      controller: controller,
-                      onPageChanged: (index) {
-                        setState(() {
-                          currentIndexs = index % banner2.length;
-                        });
-                      },
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: SizedBox(
-                            height: 300,
-                            width: double.infinity,
-                            child: Image.asset(
-                              banner2[index % banner2.length],
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      for (var i = 0; i < banner2.length; i++)
-                        Slide(currentIndexs == i)
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            //Slide banner 2
+            CustomizeSlider(banner2),
             //Trending
             Column(
               children: [
@@ -512,7 +756,7 @@ class _DemoXyzState extends State<DemoXyz> {
             //Banner 1
             Padding(
               padding:
-                  const EdgeInsets.only(top: 10, left: 5, right: 5, bottom: 10),
+              const EdgeInsets.only(top: 10, left: 5, right: 5, bottom: 10),
               child: Container(
                 height: 72.0,
                 width: 388.0,
@@ -577,7 +821,7 @@ class _DemoXyzState extends State<DemoXyz> {
             //Banner 2
             Padding(
               padding:
-                  const EdgeInsets.only(top: 10, left: 5, right: 5, bottom: 10),
+              const EdgeInsets.only(top: 10, left: 5, right: 5, bottom: 10),
               child: Container(
                 height: 72.0,
                 width: 388.0,
@@ -755,34 +999,277 @@ class _DemoXyzState extends State<DemoXyz> {
       ),
     );
   }
-
-  //Slide Banner Controller 1
-  Widget buildIndicator(bool isSelected) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 1),
-      child: Container(
-        height: isSelected ? 6 : 6,
-        width: isSelected ? 6 : 6,
+  List<Widget> indicators(imagesLength,currentIndex) {
+    return List<Widget>.generate(imagesLength, (index) {
+      return Container(
+        margin: EdgeInsets.all(3),
+        width: 10,
+        height: 10,
         decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          color: isSelected ? Color(0xFFFF5A5F) : Color(0xFFD9D9D9),
-        ),
-      ),
-    );
+            color: currentIndex == index ? Colors.black : Colors.black26,
+            shape: BoxShape.circle),
+      );
+    });
   }
 
-  //Slide Banner Controller 2
-  Widget Slide(bool isSelected) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 1),
-      child: Container(
-        height: isSelected ? 6 : 6,
-        width: isSelected ? 6 : 6,
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          color: isSelected ? Color(0xFFFF5A5F) : Color(0xFFD9D9D9),
-        ),
+
+  void _moreCatagoriesModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
       ),
+      builder: (BuildContext context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.80,
+          padding: EdgeInsets.all(15),
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.topRight,
+                child: InkWell(
+                    child: Image.asset('assets/close-small.png'),
+                    onTap: () => {Navigator.of(context).pop()}),
+              ),
+              Container(
+                child: Text(
+                  "All Categories",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                  ),
+                ),
+                alignment: Alignment.topCenter,
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(12, 20, 12, 12),
+                padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          //margin: EdgeInsets.all(12.0),
+                          //padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Color(0xFFFF5A5F),
+                                child: ClipRRect(
+                                  child: Image.asset('assets/o1_Group.png'),
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                "AC Repair\nServices",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          //margin: EdgeInsets.all(12.0),
+                          //padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Color(0xFFFF5A5F),
+                                child: ClipRRect(
+                                  child: Image.asset('assets/o2_Group.png'),
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                "Appliance\nRepair",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          //margin: EdgeInsets.all(12.0),
+                          //padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Color(0xFFFF5A5F),
+                                child: ClipRRect(
+                                  child: Image.asset('assets/o3_Group.png'),
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                "Beauty \n& Salon",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          //margin: EdgeInsets.all(12.0),
+                          //padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Color(0xFFFF5A5F),
+                                child: ClipRRect(
+                                  child: Image.asset('assets/o4_Group.png'),
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                "Trips &\nTravels",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 12),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          //margin: EdgeInsets.all(12.0),
+                          //padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Color(0xFFFF5A5F),
+                                child: ClipRRect(
+                                  child: Image.asset('assets/o5_Group.png'),
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                "Car Care\nServices",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          //margin: EdgeInsets.all(12.0),
+                          //padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Color(0xFFFF5A5F),
+                                child: ClipRRect(
+                                  child: Image.asset('assets/o6_Group.png'),
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                "Clenning\n& Pest",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          //margin: EdgeInsets.all(12.0),
+                          //padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Color(0xFFFF5A5F),
+                                child: ClipRRect(
+                                  child: Image.asset('assets/o7_Group.png'),
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                "Painting &\nRenovation",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          //margin: EdgeInsets.all(12.0),
+                          //padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Color(0xFFFF5A5F),
+                                child: ClipRRect(
+                                  child: Image.asset('assets/o8_Group.png'),
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                "Packaing & \nShifting",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 12),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+        // return your layout
+      },
     );
   }
 }
+
+

@@ -1,8 +1,6 @@
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
 
 class CustomizeSlider extends StatefulWidget {
   List<String> images;
@@ -20,10 +18,10 @@ class _CustomizeSliderState extends State<CustomizeSlider> {
       activeIndex: activeIndex,
       count: widget.images.length,
       effect: SlideEffect(
-        dotHeight: 5,
-        dotWidth: 5,
-        dotColor: Colors.black,
-        activeDotColor: Colors.red,
+        dotHeight: 8,
+        dotWidth: 8,
+        dotColor: Color(0xFFD9D9D9),
+        activeDotColor: Color(0xFFFF5A5F),
       ),
     );
   }
@@ -31,15 +29,16 @@ class _CustomizeSliderState extends State<CustomizeSlider> {
   Widget buildImage(String image, int index) {
     return Container(
       //margin: EdgeInsets.symmetric(horizontal: 3),
-      child: Image.asset(image,
+      child: Image.asset(
+        image,
         fit: BoxFit.cover,
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
       ),
-
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,16 +47,17 @@ class _CustomizeSliderState extends State<CustomizeSlider> {
           Container(
             child: CarouselSlider.builder(
                 itemCount: widget.images.length,
-                itemBuilder: (context,index, realIndex) {
+                itemBuilder: (context, index, realIndex) {
                   final image = widget.images[index];
                   return buildImage(image, index);
-                }, options: CarouselOptions(
-              height: 120,
-              autoPlay: true,
-              autoPlayInterval: Duration(seconds: 3),
-              onPageChanged: (index, reason) => setState(() => activeIndex= index
-              ),
-            )),
+                },
+                options: CarouselOptions(
+                  height: 120,
+                  autoPlay: true,
+                  autoPlayInterval: Duration(seconds: 3),
+                  onPageChanged: (index, reason) =>
+                      setState(() => activeIndex = index),
+                )),
             // child: Column(
             //   mainAxisAlignment: MainAxisAlignment.center,
             //   children: [
@@ -140,4 +140,3 @@ class _CustomizeSliderState extends State<CustomizeSlider> {
     );
   }
 }
-
